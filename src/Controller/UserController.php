@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\LoginType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,11 +77,15 @@ class UserController extends AbstractController
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+        $form = $this->createForm(
+            LoginType::class,
+            ['action' => $this->generateUrl('app_login')]
+        );
 
         return $this->render('user/login.html.twig', [
-            'controller_name' => 'LoginController',
             'last_username' => $lastUsername,
             'error'         => $error,
+            'form' => $form->createView()
         ]);
     }
 
